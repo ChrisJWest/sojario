@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sojario Speedruns</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🍶 Sojario Speedruns</h1>
+    <p>
+      Welcome to the official leaderboard for the <strong>Sojario</strong> speedrun category:
+      <br>💫 Get 8 stars in <em>Super Mario 64</em> as fast as possible...
+      <br>🍾 While chugging a bottle of soju.
+    </p>
+
+    <h2>🏁 Leaderboard</h2>
+    <table id="leaderboard">
+      <thead>
+        <tr>
+          <th>Runner</th>
+          <th>Time</th>
+          <th>Route</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Fetched runs will be inserted here -->
+      </tbody>
+    </table>
+
+    <h2>📜 Rules</h2>
+    <ul>
+      <li>Start timer on file select.</li>
+      <li>Finish entire bottle of soju by 8th star.</li>
+      <li>Timer ends on 8th star collection.</li>
+      <li>No vomiting until after the run.</li>
+    </ul>
+
+    <footer>Made with love and questionable decisions.</footer>
+  </div>
+
+  <script>
+    async function loadLeaderboard() {
+      const res = await fetch('runs.csv');
+      const csvText = await res.text();
+      const lines = csvText.trim().split('\n').slice(1); // skip header
+
+      const table = document.querySelector("#leaderboard tbody");
+      lines.forEach(line => {
+        const [name, time, route, date] = line.split(',');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${name}</td>
+          <td>${time}</td>
+          <td>${route}</td>
+          <td>${date}</td>
+        `;
+        table.appendChild(row);
+      });
+    }
+    loadLeaderboard();
+  </script>
+</body>
+</html>
